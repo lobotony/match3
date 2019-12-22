@@ -4,7 +4,7 @@ green = nil
 purple = nil
 
 gemBitmaps = {}
-
+scoreFont = nil
 bw = 8
 bh = 8
 bd = {}
@@ -14,13 +14,12 @@ sz = 64
 bitmapSize = 512
 
 function initBoard() 
-	for i=0,(bw*bh)-1	do
-		bd[i] = i % 3
+	for i=0,(bw*bh)-1 do
+		bd[i] = i % 7
 	end
 end
 
 function drawGem(gemIndex, x,y)
-	print("gemIndex = "..gemIndex)
 	image = gemBitmaps[gemIndex]
 	scaling = sz / bitmapSize
 	love.graphics.draw(image, 
@@ -38,13 +37,21 @@ function drawBoard(x, y)
 end
 
 function love.load() 	
+	initBoard()
+
 	print("--- starting")
 
-	initBoard()
+	scoreFont = love.graphics.newFont("PrincessSofia-Regular.ttf", 32)
+	print(scoreFont)
 
 	gemBitmaps[0] = love.graphics.newImage("green.png")
 	gemBitmaps[1] = love.graphics.newImage("purple.png")
 	gemBitmaps[2] = love.graphics.newImage("blue.png")
+	gemBitmaps[3] = love.graphics.newImage("grey.png")
+	gemBitmaps[4] = love.graphics.newImage("orange.png")
+	gemBitmaps[5] = love.graphics.newImage("red.png")
+	gemBitmaps[6] = love.graphics.newImage("yellow.png")
+
 --	love.window.setFullscreen(true)
 --	love.mouse.setVisible(false)
 end
@@ -65,4 +72,7 @@ function love.draw()
 	oy = (h - bph)/2
 
 	drawBoard(ox,oy)
+
+	love.graphics.setFont(scoreFont)
+	love.graphics.print("12345")
 end
