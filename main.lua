@@ -1,22 +1,34 @@
 
-testImage = nil
-green = nil
-purple = nil
-
 gemBitmaps = {}
 scoreFont = nil
 bw = 8
 bh = 8
 bd = {}
+bpw = nil
+bph = nil
+box = nil
+boy = nil
 
 sz = 64
 
 bitmapSize = 512
 
+screenWidthPixels = nil
+screenHeightPixels = nil
+
 function initBoard() 
 	for i=0,(bw*bh)-1 do
 		bd[i] = i % 7
 	end
+end
+
+function updateBoardMeasurements()
+	-- center in window 
+	screenWidthPixels,screenHeightPixels = love.graphics.getDimensions( )
+	bpw = sz*bw
+	bph = sz*bh
+	box = (screenWidthPixels - bpw)/2
+	boy = (screenHeightPixels - bph)/2
 end
 
 function drawGem(gemIndex, x,y)
@@ -36,9 +48,30 @@ function drawBoard(x, y)
 	end
 end
 
+-- returns -1 for a coord that is out of range
+function mousePosToGemCoords(x,y)
+	lx = x - box
+	ly = y - boy
+
+	rx = -1
+	ry = -1
+
+	if lx > 0 and lx < bpw then
+		rx = math.floor(lx / sz)
+	end
+
+	if ly > 0 and ly < bph then 
+		ry = math.floor(ly / sz)
+	end
+
+	return rx, ry
+end
+
+
 function love.load() 	
 	initBoard()
 
+	love.window.setMode(800,600,{highdpi=true})
 	print("--- starting")
 
 	scoreFont = love.graphics.newFont("PrincessSofia-Regular.ttf", 32)
@@ -54,25 +87,27 @@ function love.load()
 
 --	love.window.setFullscreen(true)
 --	love.mouse.setVisible(false)
+	updateBoardMeasurements()
 end
 
-function love.update(dt)
-	if(love.mouse.isDown(1)) then
-		print("down")
+function love.mousepressed(x,y,button, istouch)
+	--print("mouse down",x,y, button, istouch)
+	bx, by = mousePosToGemCoords(x,y)
+	print(bx, by)
+
+	if bx == -1 or by == -1 then 
+		--nothing
+	else
+		bd[by*bw+bx] = 0
 	end
 end
 
+function love.update(dt)
+end
+
 function love.draw()
-
-	-- center in window 
-	w,h = love.graphics.getDimensions( )
-	bpw = sz*bw
-	bph = sz*bh
-	ox = (w - bpw)/2
-	oy = (h - bph)/2
-
-	drawBoard(ox,oy)
-
+	drawBoard(box,boy)
 	love.graphics.setFont(scoreFont)
 	love.graphics.print("12345")
 end
+
