@@ -9,6 +9,8 @@ bph = nil
 box = nil
 boy = nil
 
+numGemKinds = 7
+
 sz = 64
 
 bitmapSize = 512
@@ -17,9 +19,18 @@ screenWidthPixels = nil
 screenHeightPixels = nil
 
 function initBoard() 
+	print("num gems", #gemBitmaps)
 	for i=0,(bw*bh)-1 do
-		bd[i] = i % 7
+		bd[i] = i % numGemKinds
 	end
+end
+
+function randomizeBoard()
+	math.randomseed(os.time())
+	for i=0,(bw*bh)-1 do
+		bd[i] = math.random(0,numGemKinds-1)
+		print(bd[i])
+	end	
 end
 
 function updateBoardMeasurements()
@@ -69,7 +80,8 @@ end
 
 
 function love.load() 	
-	initBoard()
+	--initBoard()
+	randomizeBoard()
 
 	love.window.setMode(800,600,{highdpi=true})
 	print("--- starting")
