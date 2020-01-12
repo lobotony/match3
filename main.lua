@@ -1,3 +1,7 @@
+local Board = require("Board")
+
+local board = Board:create()
+board:randomize()
 
 gemBitmaps = {}
 scoreFont = nil
@@ -31,7 +35,6 @@ function gemColorAt(x,y)
 end
 
 function randomizeBoard()
-	math.randomseed(os.time())
 	for i=0,(bw*bh)-1 do
 		local randomColor = math.random(0,numGemKinds-1)
 		bd[i] = createField({color = randomColor})
@@ -130,6 +133,8 @@ end
 
 
 function love.load() 	
+	math.randomseed(os.time())
+
 	love.window.setMode(800,600,{highdpi=true})
 	print("--- starting")
 
@@ -160,10 +165,9 @@ function love.mousepressed(x,y,button, istouch)
 		--nothing
 	else
 		bd[by*bw+bx].color = 0
+		print("horizontal: "..testHorizontalMatch(bx,by))
+		print("vertical: "..testVerticalMatch(bx,by))
 	end
-
-	print("horizontal: "..testHorizontalMatch(bx,by))
-	print("vertical: "..testVerticalMatch(bx,by))
 end
 
 function love.update(dt)
