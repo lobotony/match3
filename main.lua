@@ -25,11 +25,15 @@ function initBoard()
 	end
 end
 
+function gemColorAt(x,y)
+	return bd[y*bw+x]
+end
+
 function randomizeBoard()
 	math.randomseed(os.time())
 	for i=0,(bw*bh)-1 do
 		bd[i] = math.random(0,numGemKinds-1)
-		print(bd[i])
+		--print(bd[i])
 	end	
 end
 
@@ -43,8 +47,8 @@ function updateBoardMeasurements()
 end
 
 function drawGem(gemIndex, x,y)
-	image = gemBitmaps[gemIndex]
-	scaling = sz / bitmapSize
+	local image = gemBitmaps[gemIndex]
+	local scaling = sz / bitmapSize
 	love.graphics.draw(image, 
 		x, 
 		y, 
@@ -61,11 +65,11 @@ end
 
 -- returns -1 for a coord that is out of range
 function mousePosToGemCoords(x,y)
-	lx = x - box
-	ly = y - boy
+	local lx = x - box
+	local ly = y - boy
 
-	rx = -1
-	ry = -1
+	local rx = -1
+	local ry = -1
 
 	if lx > 0 and lx < bpw then
 		rx = math.floor(lx / sz)
@@ -78,10 +82,53 @@ function mousePosToGemCoords(x,y)
 	return rx, ry
 end
 
+-- checks to see if beginning at (x,y) there are three or more gems that can be matched and removed
+-- returns the number of gems that match, or -1
+function testHorizontalMatch(x,y)
+	local result = -1 
+	local startCol = gemColorAt(x,y)
+	local matchLength = 0
+
+	for i=x,(bw-1) do
+		local curCol = gemColorAt(i, y)
+		if startCol == curCol then 
+			matchLength = matchLength + 1
+		else
+			break
+		end
+	end
+
+	if matchLength >= 3 then 
+		return matchLength
+	else
+		return -1
+	end
+end
+
+function testVerticalMatch(x,y)
+	local result = -1 
+	local startCol = gemColorAt(x,y)
+	local matchLength = 0
+
+	for i=y,(bh-1) do
+		local curCol = gemColorAt(x, i)
+		if startCol == curCol then 
+			matchLength = matchLength + 1
+		else
+			break
+		end
+	end
+
+	if matchLength >= 3 then 
+		return matchLength
+	else
+		return -1
+	end
+end
+
 
 function love.load() 	
 	--initBoard()
-	randomizeBoard()
 
 	love.window.setMode(800,600,{highdpi=true})
 	print("--- starting")
@@ -97,6 +144,8 @@ function love.load()
 	gemBitmaps[5] = love.graphics.newImage("red.png")
 	gemBitmaps[6] = love.graphics.newImage("yellow.png")
 
+	randomizeBoard()
+
 --	love.window.setFullscreen(true)
 --	love.mouse.setVisible(false)
 	updateBoardMeasurements()
@@ -104,7 +153,7 @@ end
 
 function love.mousepressed(x,y,button, istouch)
 	--print("mouse down",x,y, button, istouch)
-	bx, by = mousePosToGemCoords(x,y)
+	local bx, by = mousePosToGemCoords(x,y)
 	print(bx, by)
 
 	if bx == -1 or by == -1 then 
@@ -112,6 +161,9 @@ function love.mousepressed(x,y,button, istouch)
 	else
 		bd[by*bw+bx] = 0
 	end
+
+	print("horizontal: "..testHorizontalMatch(bx,by))
+	print("vertical: "..testVerticalMatch(bx,by))
 end
 
 function love.update(dt)
