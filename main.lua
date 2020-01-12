@@ -18,21 +18,23 @@ bitmapSize = 512
 screenWidthPixels = nil
 screenHeightPixels = nil
 
-function initBoard() 
-	print("num gems", #gemBitmaps)
-	for i=0,(bw*bh)-1 do
-		bd[i] = i % numGemKinds
+function createField(params)
+	local result = {}
+	for k,v in pairs(params) do 
+		result[k] = v
 	end
+	return result
 end
 
 function gemColorAt(x,y)
-	return bd[y*bw+x]
+	return bd[y*bw+x].color
 end
 
 function randomizeBoard()
 	math.randomseed(os.time())
 	for i=0,(bw*bh)-1 do
-		bd[i] = math.random(0,numGemKinds-1)
+		local randomColor = math.random(0,numGemKinds-1)
+		bd[i] = createField({color = randomColor})
 		--print(bd[i])
 	end	
 end
@@ -59,7 +61,7 @@ end
 
 function drawBoard(x, y)
 	for i=0,(bw*bh)-1 do
-		drawGem(bd[i], x+(i%bw)*sz, y+math.floor(i/bw)*sz)
+		drawGem(bd[i].color, x+(i%bw)*sz, y+math.floor(i/bw)*sz)
 	end
 end
 
@@ -128,8 +130,6 @@ end
 
 
 function love.load() 	
-	--initBoard()
-
 	love.window.setMode(800,600,{highdpi=true})
 	print("--- starting")
 
@@ -159,7 +159,7 @@ function love.mousepressed(x,y,button, istouch)
 	if bx == -1 or by == -1 then 
 		--nothing
 	else
-		bd[by*bw+bx] = 0
+		bd[by*bw+bx].color = 0
 	end
 
 	print("horizontal: "..testHorizontalMatch(bx,by))
