@@ -1,6 +1,6 @@
 local Board = require("Board")
 
-local board = Board:create()
+board = Board:create()
 board:randomize()
 
 gemBitmaps = {}
@@ -21,26 +21,6 @@ bitmapSize = 512
 
 screenWidthPixels = nil
 screenHeightPixels = nil
-
-function createField(params)
-	local result = {}
-	for k,v in pairs(params) do 
-		result[k] = v
-	end
-	return result
-end
-
-function gemColorAt(x,y)
-	return bd[y*bw+x].color
-end
-
-function randomizeBoard()
-	for i=0,(bw*bh)-1 do
-		local randomColor = math.random(0,numGemKinds-1)
-		bd[i] = createField({color = randomColor})
-		--print(bd[i])
-	end	
-end
 
 function updateBoardMeasurements()
 	-- center in window 
@@ -64,7 +44,10 @@ end
 
 function drawBoard(x, y)
 	for i=0,(bw*bh)-1 do
-		drawGem(bd[i].color, x+(i%bw)*sz, y+math.floor(i/bw)*sz)
+		local index = y*board.bw+x
+		local field = board.fields[i]
+		local c = field.color
+		drawGem(c, x+(i%bw)*sz, y+math.floor(i/bw)*sz)
 	end
 end
 
@@ -87,51 +70,6 @@ function mousePosToGemCoords(x,y)
 	return rx, ry
 end
 
--- checks to see if beginning at (x,y) there are three or more gems that can be matched and removed
--- returns the number of gems that match, or -1
-function testHorizontalMatch(x,y)
-	local result = -1 
-	local startCol = gemColorAt(x,y)
-	local matchLength = 0
-
-	for i=x,(bw-1) do
-		local curCol = gemColorAt(i, y)
-		if startCol == curCol then 
-			matchLength = matchLength + 1
-		else
-			break
-		end
-	end
-
-	if matchLength >= 3 then 
-		return matchLength
-	else
-		return -1
-	end
-end
-
-function testVerticalMatch(x,y)
-	local result = -1 
-	local startCol = gemColorAt(x,y)
-	local matchLength = 0
-
-	for i=y,(bh-1) do
-		local curCol = gemColorAt(x, i)
-		if startCol == curCol then 
-			matchLength = matchLength + 1
-		else
-			break
-		end
-	end
-
-	if matchLength >= 3 then 
-		return matchLength
-	else
-		return -1
-	end
-end
-
-
 function love.load() 	
 	math.randomseed(os.time())
 
@@ -149,7 +87,7 @@ function love.load()
 	gemBitmaps[5] = love.graphics.newImage("red.png")
 	gemBitmaps[6] = love.graphics.newImage("yellow.png")
 
-	randomizeBoard()
+	board:randomize()
 
 --	love.window.setFullscreen(true)
 --	love.mouse.setVisible(false)
@@ -164,9 +102,9 @@ function love.mousepressed(x,y,button, istouch)
 	if bx == -1 or by == -1 then 
 		--nothing
 	else
-		bd[by*bw+bx].color = 0
-		print("horizontal: "..testHorizontalMatch(bx,by))
-		print("vertical: "..testVerticalMatch(bx,by))
+		board:setColorAt(bx, by, 0)
+		print("horizontal: "..board:testHorizontalMatch(bx,by))
+		print("vertical: "..board:testVerticalMatch(bx,by))
 	end
 end
 
