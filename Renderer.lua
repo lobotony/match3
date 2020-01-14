@@ -85,10 +85,8 @@ end
 
 
 function Renderer:render()
+	self:updateBoardMeasurements()
 	self:drawBoard(self.box, self.boy)
-
---	love.graphics.setColor(1,0,0)
---	love.graphics.rectangle("fill", 0, 0, 100, 200)	
 end
 
 return Renderer
