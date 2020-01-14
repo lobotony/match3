@@ -2,8 +2,6 @@ local Board = require("Board")
 local Renderer = require("Renderer")
 
 local board = Board:create()
-board:randomize()
-
 local renderer = Renderer:create(board)
 
 function love.load() 	
@@ -22,8 +20,10 @@ end
 
 function love.mousepressed(x,y,button, istouch)
 	--print("mouse down",x,y, button, istouch)
+	board:randomize()
+	board:markMatches()
 	local bx, by = renderer:mousePosToGemCoords(x,y)
-	print(bx, by)
+	--print(bx, by)
 
 	if bx == -1 or by == -1 then 
 		--nothing

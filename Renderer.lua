@@ -50,7 +50,15 @@ function Renderer:drawBoard(x, y)
 		local index = y * self.board.bw + x
 		local field = self.board.fields[i]
 		local c = field.color
-		self:drawGem(c, x+(i%self.board.bw)*self.sz, y+math.floor(i/self.board.bw)*self.sz)
+
+		local tx = x+(i%self.board.bw)*self.sz
+		local ty = y+math.floor(i/self.board.bw)*self.sz
+
+		if field.matched then 
+			love.graphics.rectangle("fill", tx, ty, self.sz, self.sz)
+		end
+
+		self:drawGem(c, tx, ty)
 	end
 end
 
@@ -76,7 +84,10 @@ end
 function Renderer:render()
 	self:drawBoard(self.box, self.boy)
 	love.graphics.setFont(self.scoreFont)
-	love.graphics.print("12345")	
+	love.graphics.print("12345")
+
+--	love.graphics.setColor(1,0,0)
+--	love.graphics.rectangle("fill", 0, 0, 100, 200)	
 end
 
 return Renderer

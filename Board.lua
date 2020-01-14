@@ -34,6 +34,11 @@ function Board:setColorAt(x,y,col)
 	self.fields[y*self.bw+x].color = col
 end
 
+function Board:setMatchedAt(x,y,flag) 
+	self.fields[y*self.bw+x].matched = flag
+end
+
+
 -- checks to see if beginning at (x,y) there are three or more gems that can be matched and removed
 -- returns the number of gems that match, or -1
 function Board:testHorizontalMatch(x,y)
@@ -76,6 +81,47 @@ function Board:testVerticalMatch(x,y)
 	else
 		return -1
 	end
+end
+
+function Board:clearAllMatchFlags()
+	local n = self.bw*self.bh
+	for i=0,n-1 do
+		self.fields.matched = false
+	end
+end
+
+function Board:markHorizontalMatch(x,y,n)
+	print("H marking ",x,y,n)
+	for i=0,n-1 do
+		self:setMatchedAt(x+i,y, true)
+	end
+end
+
+function Board:markVerticalMatch(x,y, n)
+	print("V marking ",x,y,n)
+	for i=0,n-1 do
+		self:setMatchedAt(x,y+i, true)
+	end
+end
+
+function Board:markMatches()
+	print("-- marking")
+	self:clearAllMatchFlags()
+
+	for y=0,self.bh-1 do
+		for x=0,self.bw-1 do
+			local hm = self:testHorizontalMatch(x,y)
+			local vm = self:testVerticalMatch(x,y)
+
+			if hm >= 3 then 
+				self:markHorizontalMatch(x,y,hm)
+			end
+			if vm >= 3 then 
+				self:markVerticalMatch(x,y,vm)
+			end
+		end
+	end
+
 end
 
 return Board
