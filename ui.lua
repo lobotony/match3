@@ -1,6 +1,7 @@
 local Ui = {}
 Ui.__index = Ui
 
+-- this is the game ui, not the Debug UI
 function Ui:create() 
 	local result = {}
 	setmetatable(result, Ui)
