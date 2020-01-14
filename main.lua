@@ -3,6 +3,8 @@ local Renderer = require("Renderer")
 local Ui = require("Ui")
 local DebugUi = require("DebugUi")
 
+local easing = require("easing/lib/easing")
+
 local board = Board:create()
 local renderer = Renderer:create(board)
 local ui = Ui:create()
