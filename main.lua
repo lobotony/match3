@@ -1,10 +1,12 @@
 local Board = require("Board")
 local Renderer = require("Renderer")
 local Ui = require("Ui")
+local DebugUi = require("DebugUi")
 
 local board = Board:create()
 local renderer = Renderer:create(board)
 local ui = Ui:create()
+local debugUi = DebugUi:create(board)
 
 suit = require "suit"
 
@@ -16,7 +18,7 @@ function love.load()
 
 	renderer:init()
 	ui:init()
-	
+
 	board:randomize()
 	board:markMatches()
 
@@ -41,29 +43,18 @@ function love.mousepressed(x,y,button, istouch)
 	end
 end]]
 
-local showMatches = {checked = false, text = "Matches"}
-local showMoves = {checked = false, text = "Moves"}
+function love.keypressed(key)
+	if key == "escape" then 
+		debugUi.enabled = not debugUi.enabled
+	end
+end
 
 function love.update(dt)
-	love.graphics.setNewFont(14)
-
-	suit.layout:reset(10,10)
-	suit.layout:padding(10)
-
-	suit.Checkbox(showMatches, suit.layout:row(100,30))
-	suit.Checkbox(showMoves, suit.layout:row(100,30))
-
-	if suit.Button("Randomize", suit.layout:row(100,30)).hit then 
-		board:randomize()
-		board:markMatches()
-	end
-
-
+	debugUi:update()
 end
 
 function love.draw()
-	renderer:updateBoardMeasurements()
-	renderer.highlightMatches = showMatches.checked
+	renderer.highlightMatches = debugUi.showMatches.checked
 	renderer:render()
 	--ui:render()
 	suit.draw()
