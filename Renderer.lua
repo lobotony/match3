@@ -5,12 +5,13 @@ function Renderer:create(board)
 	local result = {}
 	setmetatable(result, Renderer)
 	result.board = board
+	result.highlightMatches = false
+	result.highlightMoves = false
 	return result
 end
 
 -- call once on startup
 function Renderer:init()
-	self.scoreFont = love.graphics.newFont("assets/fonts/PrincessSofia-Regular.ttf", 32)
 	self.gemBitmaps = {}
 	self.gemBitmaps[0] = love.graphics.newImage("assets/images/green.png")
 	self.gemBitmaps[1] = love.graphics.newImage("assets/images/purple.png")
@@ -37,6 +38,7 @@ end
 function Renderer:drawGem(gemIndex, x,y)
 	local image = self.gemBitmaps[gemIndex]
 	local scaling = self.sz / self.bitmapSize
+	love.graphics.setColor(1,1,1,1)	
 	love.graphics.draw(image, 
 		x, 
 		y, 
@@ -54,7 +56,8 @@ function Renderer:drawBoard(x, y)
 		local tx = x+(i%self.board.bw)*self.sz
 		local ty = y+math.floor(i/self.board.bw)*self.sz
 
-		if field.matched then 
+		if field.matched and self.highlightMatches then 
+			love.graphics.setColor(1,0,0, 0.5)
 			love.graphics.rectangle("fill", tx, ty, self.sz, self.sz)
 		end
 
@@ -83,8 +86,6 @@ end
 
 function Renderer:render()
 	self:drawBoard(self.box, self.boy)
-	love.graphics.setFont(self.scoreFont)
-	love.graphics.print("12345")
 
 --	love.graphics.setColor(1,0,0)
 --	love.graphics.rectangle("fill", 0, 0, 100, 200)	
