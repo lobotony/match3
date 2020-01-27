@@ -23,9 +23,6 @@ function love.load()
 
 	board:randomize()
 	board:markMatches()
-
---	love.window.setFullscreen(true)
---	love.mouse.setVisible(false)
 end
 
 --[[
