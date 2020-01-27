@@ -7,6 +7,8 @@ function Renderer:create(board)
 	result.board = board
 	result.highlightMatches = false
 	result.highlightMoves = false
+	result.r = 0
+	result.rspeed = 0.8
 	return result
 end
 
@@ -38,13 +40,18 @@ end
 function Renderer:drawGem(gemIndex, x,y)
 	local image = self.gemBitmaps[gemIndex]
 	local scaling = self.sz / self.bitmapSize
+	local o = self.sz/2
 	love.graphics.setColor(1,1,1,1)	
 	love.graphics.draw(image, 
-		x, 
-		y, 
-		0, 
+		x+o, 
+		y+o, 
+		self.r, 
 		scaling, scaling, 
-		0, 0, 0, 0)
+		self.bitmapSize/2, self.bitmapSize/2, 0, 0)
+end
+
+function Renderer:update(dt)
+	self.r = self.r + self.rspeed * dt
 end
 
 function Renderer:drawBoard(x, y)
