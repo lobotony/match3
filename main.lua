@@ -2,6 +2,7 @@ local Board = require("Board")
 local Renderer = require("Renderer")
 local Ui = require("Ui")
 local DebugUi = require("DebugUi")
+local Game = require("Game")
 
 local easing = require("easing/lib/easing")
 
@@ -9,6 +10,7 @@ local board = Board:create()
 local renderer = Renderer:create(board)
 local ui = Ui:create()
 local debugUi = DebugUi:create(board)
+local game = Game:create(board)
 
 suit = require "suit"
 
@@ -50,6 +52,7 @@ end
 
 function love.update(dt)
 	debugUi:update()
+	renderer:update(dt)
 end
 
 function love.draw()
