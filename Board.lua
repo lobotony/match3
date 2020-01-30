@@ -155,7 +155,8 @@ end
 
 function Board:removeMatches()
 	print("removing matches ... ")
-	for i,f in ipairs(self.fields) do
+	for i = 0,(self.bw*self.bh)-1 do
+		local f = self.fields[i]
 		if f.matched then 
 			f.isRemoved = true
 		end
