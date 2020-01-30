@@ -37,6 +37,7 @@ end
 function Game:update(dt)
 	self.debugUi:update()
 	self.renderer:update(dt)
+	self.board:update(dt)
 end
 
 function Game:render()

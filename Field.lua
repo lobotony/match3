@@ -10,5 +10,9 @@ function Field:create(color)
 	return result
 end
 
+function Field:update(dt)
+	--print("updating field", dt)
+end
+
 return Field
 

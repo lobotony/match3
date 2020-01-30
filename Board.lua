@@ -15,6 +15,12 @@ function Board:create()
 	return result
 end
 
+function Board:update(dt)
+	for i=0,(self.bw*self.bh)-1 do
+		self.fields[i]:update(dt)
+	end
+end
+
 function Board:randomize()
 	self.fields = {}
 	print("-- randomizing board")
