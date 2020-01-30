@@ -1,6 +1,4 @@
 
-local easing = require("easing/lib/easing")
-
 local Renderer = {}
 Renderer.__index = Renderer
 
@@ -40,14 +38,14 @@ function Renderer:updateBoardMeasurements()
 	self.boy = (self.screenHeightPixels - self.bph)/2
 end
 
-function Renderer:drawGem(gemIndex, x,y)
+function Renderer:drawGem(gemIndex, x,y, offsetY)
 	local image = self.gemBitmaps[gemIndex]
 	local scaling = self.sz / self.bitmapSize
 	local o = self.sz/2
 	love.graphics.setColor(1,1,1,1)	
 	love.graphics.draw(image, 
 		x+o, 
-		y+o, 
+		y+o+offsetY, 
 		self.r, 
 		scaling, scaling, 
 		self.bitmapSize/2, self.bitmapSize/2, 0, 0)
@@ -72,7 +70,7 @@ function Renderer:drawBoard(x, y)
 		end
 
 		if not field.isRemoved then 
-			self:drawGem(c, tx, ty)
+			self:drawGem(c, tx, ty, field:getOffsetY()*self.sz)
 		end
 	end
 end

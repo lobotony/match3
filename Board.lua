@@ -56,6 +56,10 @@ function Board:isRemoved(x,y)
 	return self.fields[y*self.bw+x].isRemoved
 end
 
+function Board:drop(x,y,offset)
+	self.fields[y*self.bw+x]:drop(offset)
+end
+
 -- checks to see if beginning at (x,y) there are three or more gems that can be matched and removed
 -- returns the number of gems that match, or -1
 function Board:testHorizontalMatch(x,y)
@@ -185,6 +189,7 @@ function Board:dropGem(x,y)
 	self:setColorAt(x,y,self:gemColorAt(x,originalY))
 	self:setRemoved(x,y,false)
 	self:setRemoved(x,originalY, true)
+	self:drop(x,y,y-originalY)
 end
 
 return Board
