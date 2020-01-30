@@ -121,7 +121,15 @@ function Board:markMatches()
 			end
 		end
 	end
+end
 
+function Board:removeMatches()
+	print("removing matches ... ")
+	for i,f in ipairs(self.fields) do
+		if f.matched then 
+			f.isRemoved = true
+		end
+	end
 end
 
 return Board

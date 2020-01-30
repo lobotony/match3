@@ -37,6 +37,10 @@ function DebugUi:update()
 		self.board:randomize()
 		self.board:markMatches()
 	end	
+
+	if suit.Button("Remove", suit.layout:row(w,h)).hit then
+		self.board:removeMatches()
+	end
 end
 
 function DebugUi:render()

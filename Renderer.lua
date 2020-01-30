@@ -71,7 +71,9 @@ function Renderer:drawBoard(x, y)
 			love.graphics.rectangle("fill", tx, ty, self.sz, self.sz)
 		end
 
-		self:drawGem(c, tx, ty)
+		if not field.isRemoved then 
+			self:drawGem(c, tx, ty)
+		end
 	end
 end
 

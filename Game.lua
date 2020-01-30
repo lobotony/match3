@@ -12,7 +12,7 @@ function Game:create()
 	self.board = Board:create()
 	self.renderer = Renderer:create(self.board)
 	self.ui = Ui:create()
-	self.debugUi = DebugUi:create(board)
+	self.debugUi = DebugUi:create(self.board)
 	return result
 end
 
@@ -40,6 +40,10 @@ function Game:render()
 	self.renderer:render()
 	--ui:render()
 	self.debugUi:render()
+end
+
+function Game:removeMatches()
+	self.board:removeMatches()
 end
 
 return Game
