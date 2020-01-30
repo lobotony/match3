@@ -1,6 +1,8 @@
 local DebugUi = {}
 DebugUi.__index = DebugUi
 
+suit = require "suit"
+
 function DebugUi:create(board) 
 	local result = {}
 	result.board = board
@@ -36,5 +38,10 @@ function DebugUi:update()
 		self.board:markMatches()
 	end	
 end
+
+function DebugUi:render()
+	suit.draw()
+end
+
 
 return DebugUi

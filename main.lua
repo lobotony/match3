@@ -1,30 +1,11 @@
-local Board = require("Board")
-local Renderer = require("Renderer")
-local Ui = require("Ui")
-local DebugUi = require("DebugUi")
 local Game = require("Game")
+local game = Game:create()
 
-local easing = require("easing/lib/easing")
-
-local board = Board:create()
-local renderer = Renderer:create(board)
-local ui = Ui:create()
-local debugUi = DebugUi:create(board)
-local game = Game:create(board)
-
-suit = require "suit"
 
 function love.load() 	
-	math.randomseed(os.time())
-
 	love.window.setMode(800,600,{highdpi=true})
 	print("--- starting")
-
-	renderer:init()
-	ui:init()
-
-	board:randomize()
-	board:markMatches()
+	game:init()
 end
 
 --[[
@@ -45,19 +26,13 @@ function love.mousepressed(x,y,button, istouch)
 end]]
 
 function love.keypressed(key)
-	if key == "escape" then 
-		debugUi.enabled = not debugUi.enabled
-	end
+	game:keypressed(key)
 end
 
 function love.update(dt)
-	debugUi:update()
-	renderer:update(dt)
+	game:update(dt)
 end
 
 function love.draw()
-	renderer.highlightMatches = debugUi.showMatches.checked
-	renderer:render()
-	--ui:render()
-	suit.draw()
+	game:render()
 end

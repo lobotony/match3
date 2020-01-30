@@ -1,3 +1,6 @@
+
+local easing = require("easing/lib/easing")
+
 local Renderer = {}
 Renderer.__index = Renderer
 
