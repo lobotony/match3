@@ -11,7 +11,7 @@ function Field:create(color)
 	setmetatable(result, Field)
 	result.dropping = false
 	result.deltaY = 0
-	result.dropDuration = 1
+	result.dropDuration = .2
 	result.t = 0
 	result.oy = 0
 	return result
@@ -20,7 +20,7 @@ end
 function Field:update(dt)
 	--print("updating field", dt)
 	if self.dropping and self.t < self.dropDuration then 
-		self.oy = easing.inQuad(self.t, -self.deltaY, self.deltaY, self.dropDuration)
+		self.oy = easing.inQuart(self.t, -self.deltaY, self.deltaY, self.dropDuration)
 		self.t = self.t + dt
 		print("field dropping ", self.oy)
 	else
