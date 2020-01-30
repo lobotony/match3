@@ -39,6 +39,10 @@ function DebugUi:update()
 	if suit.Button("Remove", suit.layout:row(w,h)).hit then
 		self.remove()
 	end
+
+	if suit.Button("Drop Old", suit.layout:row(w,h)).hit then
+		self.dropOld()
+	end
 end
 
 function DebugUi:render()

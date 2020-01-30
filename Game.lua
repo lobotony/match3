@@ -17,6 +17,7 @@ function Game:create()
 
 	self.debugUi.randomize = function() self:randomizeBoard() end
 	self.debugUi.remove = function() self:removeMatches() end
+	self.debugUi.dropOld = function() self:dropOldGems() end
 
 	return result
 end
@@ -52,6 +53,12 @@ end
 
 function Game:removeMatches()
 	self.board:removeMatches()
+end
+
+function Game:dropOldGems()
+	self.board:dropOldGems()
+	self.board:clearAllMatchFlags()
+	self.board:markMatches()
 end
 
 return Game
