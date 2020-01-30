@@ -12,16 +12,19 @@ function Game:create()
 	self.board = Board:create()
 	self.renderer = Renderer:create(self.board)
 	self.ui = Ui:create()
-	self.debugUi = DebugUi:create(self.board)
+	self.debugUi = DebugUi:create()
+
+
+	self.debugUi.randomize = function() self:randomizeBoard() end
+	self.debugUi.remove = function() self:removeMatches() end
+
 	return result
 end
 
 function Game:init()
 	math.randomseed(os.time())
-	self.board:randomize()
-	self.board:markMatches()
+	self:randomizeBoard()
 	self.renderer:init()
-
 end
 
 function Game:keypressed(key)
@@ -40,6 +43,11 @@ function Game:render()
 	self.renderer:render()
 	--ui:render()
 	self.debugUi:render()
+end
+
+function Game:randomizeBoard()
+	self.board:randomize()
+	self.board:markMatches()
 end
 
 function Game:removeMatches()

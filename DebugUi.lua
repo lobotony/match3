@@ -3,9 +3,8 @@ DebugUi.__index = DebugUi
 
 suit = require "suit"
 
-function DebugUi:create(board) 
+function DebugUi:create() 
 	local result = {}
-	result.board = board
 	result.enabled = true
 	setmetatable(result, DebugUi)
 	result.showMatches = {checked = false, text = "Matches"}
@@ -34,12 +33,11 @@ function DebugUi:update()
 	end
 
 	if suit.Button("Randomize", suit.layout:row(w,h)).hit then 
-		self.board:randomize()
-		self.board:markMatches()
+		self.randomize()
 	end	
 
 	if suit.Button("Remove", suit.layout:row(w,h)).hit then
-		self.board:removeMatches()
+		self.remove()
 	end
 end
 
