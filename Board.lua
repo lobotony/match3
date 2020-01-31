@@ -173,7 +173,7 @@ function Board:dropOldGems()
 		for x=0,self.bw-1 do 
 			-- check if current gem is not removed and gem below current x/y is removed. drop it if necessary
 			if not self:isRemoved(x,y) and self:isRemoved(x,y+1) then 
-				print("dropping: ",x,y)
+				--print("dropping: ",x,y)
 				self:dropGem(x,y)
 			end
 		end

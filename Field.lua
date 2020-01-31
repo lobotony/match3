@@ -22,7 +22,7 @@ function Field:update(dt)
 	if self.dropping and self.t < self.dropDuration then 
 		self.oy = easing.inQuart(self.t, -self.deltaY, self.deltaY, self.dropDuration)
 		self.t = self.t + dt
-		print("field dropping ", self.oy)
+		--print("field dropping ", self.oy)
 	else
 		--print("drop done ", self.oy)
 		self.dropping = false
