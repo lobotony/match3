@@ -21,11 +21,15 @@ function Board:update(dt)
 	end
 end
 
+function Board:createRandomColor()
+	return math.random(0,self.numGemKinds-1)
+end
+
 function Board:randomize()
 	self.fields = {}
 	print("-- randomizing board")
 	for i=0,(self.bw * self.bh)-1 do
-		local randomColor = math.random(0,self.numGemKinds-1)
+		local randomColor = self:createRandomColor()
 		self.fields[i] = Field:create(randomColor)
 		--print(randomColor)
 	end	
@@ -191,6 +195,20 @@ function Board:dropGem(x,y)
 	self:setRemoved(x,y,false)
 	self:setRemoved(x,originalY, true)
 	self:drop(x,y,y-originalY)
+end
+
+
+function Board:dropNewGems()
+	local dropStart = -4
+	for y = 0,self.bh-1 do
+		for x = 0,self.bw-1 do	
+			if self:isRemoved(x,y) then
+				self:setRemoved(x,y,false)
+				self:setColorAt(x,y,self:createRandomColor())
+				self:drop(x,y,y-dropStart)
+			end
+		end
+	end
 end
 
 return Board

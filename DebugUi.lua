@@ -43,6 +43,11 @@ function DebugUi:update()
 	if suit.Button("Drop Old", suit.layout:row(w,h)).hit then
 		self.dropOld()
 	end
+
+	if suit.Button("Drop New", suit.layout:row(w,h)).hit then
+		self.dropNew()
+	end
+
 end
 
 function DebugUi:render()
