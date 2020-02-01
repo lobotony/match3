@@ -13,6 +13,7 @@ function Renderer:create(board)
 	result.r = 0
 	result.rspeed = 0.8
 	result.moves = {}
+	result.selection = {}
 	return result
 end
 
@@ -110,7 +111,15 @@ function Renderer:drawMoves()
 	love.graphics.setColor(1,1,1,1)
 end
 
-function Renderer:mousePosToGemCoords(x,y)
+function Renderer:drawSelection()
+	for _,v in pairs(self.selection) do
+		local sx = self.box + v.x * self.sz
+		local sy = self.boy + v.y * self.sz
+		self:drawRect(sx, sy, twhite)
+	end
+end
+
+function Renderer:mousePosToFieldCoords(x,y)
 	local lx = x - self.box
 	local ly = y - self.boy
 
@@ -135,6 +144,7 @@ function Renderer:render()
 	if self.highlightMoves then 
 		self:drawMoves(self.box, self.boy)
 	end
+	self:drawSelection()
 end
 
 return Renderer

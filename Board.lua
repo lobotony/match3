@@ -270,8 +270,13 @@ function Board:findMoves()
 			self:hswap(x,y) -- restore original state for following tests
 		end
 	end
-
 	return result
+end
+
+function Board:performMove(ax, ay, bx, by) -- no animation yet
+	local c = self:gemColorAt(ax, ay)
+	self:setColorAt(ax, ay, self:gemColorAt(bx, by))
+	self:setColorAt(bx, by, c)
 end
 
 return Board

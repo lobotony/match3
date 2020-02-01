@@ -10,6 +10,7 @@ function DebugUi:create()
 	result.showMatches = {checked = false, text = "Matches"}
 	result.showMoves = {checked = false, text = "Moves"}	
 	result.fullscreen = {checked = false, text = "Fullscreen"}	
+	result.numMoves = -1
 	return result
 end
 
@@ -51,6 +52,8 @@ function DebugUi:update()
 	if suit.Button("Find moves", suit.layout:row(w,h)).hit then
 		self.findMoves()
 	end
+
+	suit.Label("Moves: "..self.numMoves, suit.layout:row(w,h))
 
 end
 

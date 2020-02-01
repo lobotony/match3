@@ -9,22 +9,9 @@ function love.load()
 	game:init()
 end
 
---[[
 function love.mousepressed(x,y,button, istouch)
-	--print("mouse down",x,y, button, istouch)
-	board:randomize()
-	board:markMatches()
-	local bx, by = renderer:mousePosToGemCoords(x,y)
-	--print(bx, by)
-
-	if bx == -1 or by == -1 then 
-		--nothing
-	else
-		board:setColorAt(bx, by, 0)
-		print("horizontal: "..board:testHorizontalMatch(bx,by))
-		print("vertical: "..board:testVerticalMatch(bx,by))
-	end
-end]]
+	game:mousePressed(x,y)
+end
 
 function love.keypressed(key)
 	game:keypressed(key)

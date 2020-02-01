@@ -11,7 +11,7 @@ function Field:create(color)
 	setmetatable(result, Field)
 	result.dropping = false
 	result.deltaY = 0
-	result.dropDuration = .2
+	result.dropDuration = .5
 	result.t = 0
 	result.oy = 0
 	return result
