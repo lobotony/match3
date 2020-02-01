@@ -247,6 +247,9 @@ function Board:hswap(x,y)
 end
 
 function Board:findMoves()
+
+	local result = {}
+
 	for y=0,self.bh-2 do -- one less because swap needs space
 		for x=0,self.bw-2 do -- same here
 			
@@ -254,7 +257,7 @@ function Board:findMoves()
 			self:vswap(x,y) -- test move
 			local newMatchCount = self:countMatches()
 			if newMatchCount > oldMatchCount then 
-				print("found V move at ",x,y, oldMatchCount, newMatchCount)
+				table.insert(result, {orientation="v", x=x, y=y})
 			end
 			self:vswap(x,y) -- restore original state for following tests
 
@@ -262,11 +265,13 @@ function Board:findMoves()
 			self:hswap(x,y) -- test move
 			newMatchCount = self:countMatches()
 			if newMatchCount > oldMatchCount then 
-				print("found H move at ",x,y, oldMatchCount, newMatchCount)
+				table.insert(result, {orientation="h", x=x, y=y})
 			end
 			self:hswap(x,y) -- restore original state for following tests
 		end
 	end
+
+	return result
 end
 
 return Board

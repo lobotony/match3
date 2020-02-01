@@ -7,7 +7,6 @@ function love.load()
 	love.window.setMode(800,600,{highdpi=true})
 	print("--- starting")
 	game:init()
-	print(inspect(game, {depth=3}))
 end
 
 --[[

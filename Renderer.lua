@@ -2,6 +2,8 @@
 local Renderer = {}
 Renderer.__index = Renderer
 
+local inspect = require("inspect/inspect")
+
 function Renderer:create(board) 
 	local result = {}
 	setmetatable(result, Renderer)
@@ -10,6 +12,7 @@ function Renderer:create(board)
 	result.highlightMoves = false
 	result.r = 0
 	result.rspeed = 0.8
+	result.moves = {}
 	return result
 end
 
@@ -32,10 +35,10 @@ end
 function Renderer:updateBoardMeasurements()
 	-- center in window 
 	self.screenWidthPixels,self.screenHeightPixels = love.graphics.getDimensions( )
-	self.bpw = self.sz * self.board.bw
-	self.bph = self.sz * self.board.bh
-	self.box = (self.screenWidthPixels - self.bpw)/2
-	self.boy = (self.screenHeightPixels - self.bph)/2
+	self.bpw = self.sz * self.board.bw -- board pixel width
+	self.bph = self.sz * self.board.bh -- board pixel height
+	self.box = (self.screenWidthPixels - self.bpw)/2 -- board offset x, used for e.g. centering board drawing
+	self.boy = (self.screenHeightPixels - self.bph)/2 -- board offset y
 end
 
 function Renderer:drawGem(gemIndex, x,y, offsetY)
@@ -75,6 +78,38 @@ function Renderer:drawBoard(x, y)
 	end
 end
 
+-- in size of a field
+-- color = rgba table
+-- x,y = absolute screen coords
+function Renderer:drawRect(x,y, color) 
+	love.graphics.setColor(color.r, color.g, color.b, color.a)
+	love.graphics.rectangle("fill", x, y, self.sz, self.sz)
+end
+
+local a = .2
+local twhite = {r=1, g=1, b=1, a=a}
+local tyellow = {r=1, g=1, b=0, a=a}
+local tpurple = {r=1, g=0, b=1, a=a}
+
+-- always draws moves semi-transparently at board offset in field size
+function Renderer:drawMoves()
+	for _, v in pairs(self.moves) do
+		local col = v.orientation == "v" and tyellow or tpurple
+		local xoff = v.orientation == "h" and 1 or 0
+		local yoff = v.orientation == "v" and 1 or 0
+
+		local ax = self.box + v.x * self.sz
+		local ay = self.boy + v.y * self.sz
+
+		local bx = self.box + (v.x+xoff) * self.sz
+		local by = self.boy + (v.y+yoff) * self.sz
+
+		self:drawRect(ax, ay, col)
+		self:drawRect(bx, by, col)
+	end
+	love.graphics.setColor(1,1,1,1)
+end
+
 function Renderer:mousePosToGemCoords(x,y)
 	local lx = x - self.box
 	local ly = y - self.boy
@@ -97,6 +132,9 @@ end
 function Renderer:render()
 	self:updateBoardMeasurements()
 	self:drawBoard(self.box, self.boy)
+	if self.highlightMoves then 
+		self:drawMoves(self.box, self.boy)
+	end
 end
 
 return Renderer

@@ -3,6 +3,8 @@ local Renderer = require("Renderer")
 local Ui = require("Ui")
 local DebugUi = require("DebugUi")
 
+local inspect = require("inspect/inspect")
+
 local Game = {}
 Game.__index = Game
 
@@ -44,6 +46,7 @@ end
 
 function Game:render()
 	self.renderer.highlightMatches = self.debugUi.showMatches.checked
+	self.renderer.highlightMoves = self.debugUi.showMoves.checked
 	self.renderer:render()
 	--ui:render()
 	self.debugUi:render()
@@ -52,6 +55,9 @@ end
 function Game:randomizeBoard()
 	self.board:randomize()
 	self.board:markMatches()
+	local moves = self.board:findMoves()
+	print(inspect(moves))
+	self.renderer.moves = moves
 end
 
 function Game:removeMatches()
@@ -71,7 +77,9 @@ function Game:dropNewGems()
 end
 
 function Game:findMoves()
-	self.board:findMoves()
+	local moves = self.board:findMoves()
+	print(inspect(moves))
+	self.renderer.moves = moves
 end
 
 return Game
