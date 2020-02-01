@@ -157,6 +157,27 @@ function Board:markMatches()
 	end
 end
 
+-- only count, don't mark
+function Board:countMatches()
+	local matchCount = 0
+
+	for y=0,self.bh-1 do
+		for x=0,self.bw-1 do
+			local hm = self:testHorizontalMatch(x,y)
+			local vm = self:testVerticalMatch(x,y)
+
+			if hm >= 3 then 
+				matchCount = matchCount + 1
+			end
+			if vm >= 3 then 
+				matchCount = matchCount + 1
+			end
+		end
+	end
+
+	return matchCount
+end
+
 function Board:removeMatches()
 	print("removing matches ... ")
 	for i = 0,(self.bw*self.bh)-1 do
@@ -207,6 +228,43 @@ function Board:dropNewGems()
 				self:setColorAt(x,y,self:createRandomColor())
 				self:drop(x,y,y-dropStart)
 			end
+		end
+	end
+end
+
+-- swaps given color with the one underneath
+function Board:vswap(x,y)
+	local c = self:gemColorAt(x,y)
+	self:setColorAt(x,y,self:gemColorAt(x,y+1))
+	self:setColorAt(x,y+1,c)
+end
+
+-- swaps given color with the one to the right
+function Board:hswap(x,y)
+	local c = self:gemColorAt(x,y)
+	self:setColorAt(x,y,self:gemColorAt(x+1,y))
+	self:setColorAt(x+1,y,c)
+end
+
+function Board:findMoves()
+	for y=0,self.bh-2 do -- one less because swap needs space
+		for x=0,self.bw-2 do -- same here
+			
+			local oldMatchCount = self:countMatches()
+			self:vswap(x,y) -- test move
+			local newMatchCount = self:countMatches()
+			if newMatchCount > oldMatchCount then 
+				print("found V move at ",x,y, oldMatchCount, newMatchCount)
+			end
+			self:vswap(x,y) -- restore original state for following tests
+
+			oldMatchCount = self:countMatches()
+			self:hswap(x,y) -- test move
+			newMatchCount = self:countMatches()
+			if newMatchCount > oldMatchCount then 
+				print("found H move at ",x,y, oldMatchCount, newMatchCount)
+			end
+			self:hswap(x,y) -- restore original state for following tests
 		end
 	end
 end

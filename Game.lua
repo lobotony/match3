@@ -19,6 +19,7 @@ function Game:create()
 	self.debugUi.remove = function() self:removeMatches() end
 	self.debugUi.dropOld = function() self:dropOldGems() end
 	self.debugUi.dropNew = function() self:dropNewGems() end
+	self.debugUi.findMoves = function() self:findMoves() end
 
 	return result
 end
@@ -67,6 +68,10 @@ function Game:dropNewGems()
 	self.board:dropNewGems()
 	self.board:clearAllMatchFlags() -- FIXME: move out
 	self.board:markMatches() -- FIXME: move out
+end
+
+function Game:findMoves()
+	self.board:findMoves()
 end
 
 return Game

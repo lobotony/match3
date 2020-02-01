@@ -48,6 +48,10 @@ function DebugUi:update()
 		self.dropNew()
 	end
 
+	if suit.Button("Find moves", suit.layout:row(w,h)).hit then
+		self.findMoves()
+	end
+
 end
 
 function DebugUi:render()
