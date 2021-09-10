@@ -56,7 +56,7 @@ function Renderer:drawGem(gemIndex, x,y, offsetY)
 end
 
 function Renderer:update(dt)
-	self.r = self.r + self.rspeed * dt
+	self.r = 0 -- self.r + self.rspeed * dt
 end
 
 function Renderer:drawBoard(x, y)

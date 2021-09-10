@@ -5,6 +5,7 @@ local inspect = require("inspect/inspect")
 
 function love.load() 	
 	love.window.setMode(800,600,{highdpi=true})
+	love.window.setTitle("Match 3")
 	print("--- starting")
 	game:init()
 end
