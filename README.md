@@ -1,3 +1,4 @@
 # match3
 
-Prototype of a simple tile matching game in Lua and Love2d.
+A small "match 3" game I wrote as a showpiece for a lecture at a middleschool. 
+Graphics lovingly crafted by my kid.
